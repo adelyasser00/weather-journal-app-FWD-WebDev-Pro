@@ -17,7 +17,7 @@ body{
 }
 
 .holder{
-
+display:flex;
 }
 
 .entry{

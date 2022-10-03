@@ -19,13 +19,12 @@ APP.use(EXPRESS.static('website'));
 // Setup Server
 const PORT = 8000;
 const SERVER = APP.listen(PORT,()=>console.log(`running on localhost: ${PORT}`));
-APP.get('/', (req, res) => {
+APP.get('/all',(req,res)=>{
     res.send(projectData);
-    console.log(projectData);
 });
-APP.post('/', (req, res) => {
-    projectData.temperature = req.body.temperature;
-    projectData.date = req.body.date;
-    projectData.userResponse = req.body.userResponse;
-    console.log(projectData);
+APP.post('/add',(req,res)=>{
+    projectData['date'] = req.body.date;
+    projectData['temp'] = req.body.temp;
+    projectData['content'] = req.body.content;
+    res.send(projectData);
 });
