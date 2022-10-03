@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-projectData = {};
+let projectData = {};
 
 // Require EXPRESS to run server and routes
 const EXPRESS = require('express');
@@ -19,10 +19,14 @@ APP.use(EXPRESS.static('website'));
 // Setup Server
 const PORT = 8000;
 const SERVER = APP.listen(PORT,()=>console.log(`running on localhost: ${PORT}`));
+// Setup GET Route
 APP.get('/all',(req,res)=>{
+    // Send the projectData object to the client
     res.send(projectData);
 });
+// Setup POST Route
 APP.post('/add',(req,res)=>{
+    // Add the data to the projectData object
     projectData['date'] = req.body.date;
     projectData['temp'] = req.body.temp;
     projectData['content'] = req.body.content;
