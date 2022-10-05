@@ -17,28 +17,25 @@ document.getElementById('generate').addEventListener('click',()=>{
   .then(function(weather){
     console.log(weather);
     // add data to POST request
-    postData('/add',{date:newDate,temp:weather.main.temp,content:FEELINGS});
+    postRouteData('/add',{date:newDate,temp:weather.main.temp,content:FEELINGS});
     // then after POST request, Update UI with new data posted to server
   }).then(function(){
     updateUI();
   });
 });
 
- const updateUI = async () => {
-  // get the data from the server
-  const request = await fetch('/all');
-  try{
-    // convert the data to json
-    const updatedData = await request.json();
-    // update the UI
-    document.getElementById('date').innerHTML = updatedData.date;
-    document.getElementById('temp').innerHTML = updatedData.temp;
-    document.getElementById('content').innerHTML = updatedData.content;
-  }catch(error){
-    console.log("error",error);
+// get the weather data from the API using the zip code and the API key
+const generateWeather = async (BASE_URL,ZIP,API_KEY)=>{
+  const result = await fetch(BASE_URL+ZIP+API_KEY)
+  try {
+    const data = await result.json();
+    return data;
+  }  catch(error) {
+    console.log("error", error);
   }
 }
-const postData = async ( url = '', data = {})=>{
+
+const postRouteData = async ( url = '', object = {})=>{
   // body of the POST request, as taught in the course
     const response = await fetch(url, {
     method: 'POST', 
@@ -48,26 +45,31 @@ const postData = async ( url = '', data = {})=>{
     },
     body: JSON.stringify({
       // convert the data used to strings
-      date: data.date,
-      temp: data.temp,
-      content: data.content
+      date: object.date,
+      temp: object.temp,
+      content: object.content
     }),       
   });
     try {
       // convert the data to json
-      const newData = await response.json();
-      return newData;
+      const returnData = await response.json();
+      return returnData;
     }catch(error) {
     console.log("error", error);
     }
 };
-// get the weather data from the API using the zip code and the API key
-const generateWeather = async (BASE_URL,ZIP,API_KEY)=>{
-  const result = await fetch(BASE_URL+ZIP+API_KEY)
-  try {
-    const data = await result.json();
-    return data;
-  }  catch(error) {
-    console.log("error", error);
+
+const updateUI = async () => {
+  // get the data from the server
+  const req = await fetch('/all');
+  try{
+    // convert the data to json
+    const updatedData = await req.json();
+    // update the UI
+    document.getElementById('date').innerHTML = updatedData.date;
+    document.getElementById('temp').innerHTML = updatedData.temp;
+    document.getElementById('content').innerHTML = updatedData.content;
+  }catch(error){
+    console.log("error",error);
   }
 }
