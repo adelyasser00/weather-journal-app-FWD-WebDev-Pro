@@ -18,9 +18,10 @@ document.getElementById('generate').addEventListener('click',()=>{
     console.log(weather);
     // add data to POST request
     postData('/add',{date:newDate,temp:weather.main.temp,content:FEELINGS});
-    // Update UI with new data obtained
+    // then after POST request, Update UI with new data posted to server
+  }).then(function(){
     updateUI();
-  })
+  });
 });
 
  const updateUI = async () => {
